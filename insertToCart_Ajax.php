@@ -18,7 +18,7 @@
           $product_price=$_GET['product_price'];                      
 
           try{
-               $sql= "INSERT INTO cart (user_id, product_id, product_qty, total_price) VALUES ('".$user_id."','".$productID."','1','".$product_price."')";
+               $sql= "INSERT INTO cart (user_id, product_id, product_qty, total_price) VALUES ('".$user_id."','".$productID."','0','0')";
                $object=$conn->query($sql);
 
                $sql2= "SELECT * FROM `cart` WHERE user_id='".$user_id."'";

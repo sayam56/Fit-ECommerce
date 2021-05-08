@@ -71,8 +71,7 @@
                                <li><a href="#">Pages</a>
                                    <ul class="header__menu__dropdown">
                                        <li><a href="product-detail.php">Product Details</a></li>
-                                       <li><a href="shoping-cart.php">Shoping Cart</a></li>
-                                       <li><a href="checkout.php">Check Out</a></li>
+                                       <li><a href="shoping-cart.php">Shopping Cart</a></li>
                                    </ul>
                                </li>
                                <li><a href="contact.php">Contact Us</a></li>
@@ -83,9 +82,9 @@
                    </div>
                    <div class="col-lg-3">
                        <div class="header__cart">
-                           <ul id="shoppingBag">
+                           <ul id="shoppingBag" onclick="redirect();">
                            <!-- here you will increment the count from mysql db-->
-                               <li><a href="shoping-cart.php"><i class="fa fa-shopping-bag"></i> <span><?php echo $cartCount; ?></span></a></li>
+                               <li id="shoppingC" ><a href="shoping-cart.php"><i class="fa fa-shopping-bag"></i> <span><?php echo $cartCount; ?></span></a></li>
                            </ul>
                            <!-- #<div class="header__cart__price">item: <span>$150.00</span></div> -->
                        </div>
@@ -97,3 +96,9 @@
            </div>
        </header>
        <!-- Header Section End -->
+
+       <script>
+        function redirect(){
+            window.location.href = "shoping-cart.php";
+        }
+       </script>

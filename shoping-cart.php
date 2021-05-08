@@ -145,18 +145,19 @@ if(isset($_SESSION['user_id'])){
                                             <td class="shoping__cart__price">
                                                 $<?php echo $productInfo[3]; ?>
                                             </td>
-                                            <td class="shoping__cart__price">
+                                            <td class="shoping__cart__price" id="availableQTY<?php echo $key[2]; ?>">
+                                            <!-- available quantity -->
                                             <?php echo $productInfo[4]; ?>pcs
                                             </td>
                                             <td class="shoping__cart__quantity">
+                                            <!-- purchasing  quantity -->
                                                 <div class="quantity">
-                                                    <div class="pro-qty">
-                                                        <input type="text" value="1">
-                                                    </div>
+                                                    <input class="qtyInput" id="qtyInput<?php echo $key[2]; ?>" type="number" value="<?php echo $key[3]; ?>" min="0" max="<?php echo $productInfo[4]; ?>">                                                  
                                                 </div>
+                                                <button id="qtyBTN<?php echo $key[2]; ?>" class="qtyBTN" onclick="updateTotal(<?php echo $key[2]; ?>,<?php echo $productInfo[3]; ?>, <?php echo $key[4]; ?>, <?php echo $productInfo[4]; ?>)">Update</button>
                                             </td>
-                                            <td class="shoping__cart__total">
-                                                $110.00
+                                            <td class="shoping__cart__total" id="qtyWiseTotal<?php echo $key[2]; ?>">
+                                            $<?php echo $key[4]; ?>
                                             </td>
                                             <td class="shoping__cart__item__close">
                                                 <span class="icon_close"></span>
@@ -186,8 +187,7 @@ if(isset($_SESSION['user_id'])){
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
                         <a href="index.php" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            Upadate Cart</a>
+                        <a class="primary-btn cart-btn cart-btn-right" onclick="updateCartPage()">Update Cart</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -196,9 +196,8 @@ if(isset($_SESSION['user_id'])){
                 <div class="col-lg-6">
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
-                        <ul>
-                            <li>Subtotal <span>$454.98</span></li>
-                            <li>Total <span>$454.98</span></li>
+                        <ul id="CartTotal">
+                            <li>Total <span >$0</span></li>
                         </ul>
                         <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
@@ -222,6 +221,80 @@ if(isset($_SESSION['user_id'])){
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
+
+    <script>
+
+    var user_id = "<?php echo $user_id; ?>"
+
+        function updateTotal(product_id,unitPrice,prevPrice,availableQTY){
+            let updateQtyVal=0;
+            let updatedTotalPrice = 0;
+            updateQtyVal=document.getElementById("qtyInput"+product_id).value;
+
+            console.log(updateQtyVal);
+
+            updatedTotalPrice = (parseInt(unitPrice) * parseInt(updateQtyVal))+parseInt(prevPrice);
+
+            updatedAvailableQty = parseInt(availableQTY)-parseInt(updateQtyVal);
+
+            document.getElementById("qtyWiseTotal"+product_id).innerHTML = "$"+updatedTotalPrice;
+
+            document.getElementById("availableQTY"+product_id).innerHTML = updatedAvailableQty + "pcs";
+
+            console.log(updatedTotalPrice);
+            console.log(updatedAvailableQty);
+
+
+            var ajaxreq=new XMLHttpRequest();
+                ajaxreq.open("GET","updateCartVal_Ajax.php?productID="+product_id+"&updatedTotalPrice="+updatedTotalPrice+"&updatedAvailableQty="+updatedAvailableQty+"&purchasedQtyVal="+updateQtyVal+"&user_id="+user_id );
+                //console.log(member.id);
+                ajaxreq.onreadystatechange=function ()
+                {
+                 if(ajaxreq.readyState==4 && ajaxreq.status==200)
+                        {
+
+                            console.log('cart and product DB is now updated');
+
+                            //document.getElementById("qtyInput"+product_id).innerHTML=0;
+
+                             var response=ajaxreq.responseText;
+                            
+                             var divelm=document.getElementById('shoppingBag');
+                            
+                             divelm.innerHTML=response;
+                        }
+                }
+                
+                ajaxreq.send(); 
+
+            //console.log(updatedTotalPrice);
+        }
+
+
+        function updateCartPage(){
+         
+            var ajaxreq=new XMLHttpRequest();
+                ajaxreq.open("GET","finalCartCalc_ajax.php?user_id="+user_id );
+                //console.log(member.id);
+                ajaxreq.onreadystatechange=function ()
+                {
+                 if(ajaxreq.readyState==4 && ajaxreq.status==200)
+                        {
+
+                            console.log('INSIDE ajax');
+                             var response=ajaxreq.responseText;
+                            
+                             var divelm=document.getElementById('CartTotal');
+
+                            console.log(divelm);
+                            
+                             divelm.innerHTML=response;
+                        }
+                }
+                
+                ajaxreq.send();
+        }
+    </script>
 
 </body>
 

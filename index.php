@@ -170,12 +170,12 @@ if(isset($_SESSION['user_id'])){
                                                 <ul class="product__item__pic__hover">
                                                     <li>
                                                         <!-- <button ></button> -->
-                                                        <a href="#" onclick="promtLogin(<?php echo $key[0] ?>, <?php echo $key[3] ?>);"><i class="fa fa-shopping-cart"></i></a>
+                                                        <a style="cursor: pointer;" onclick="promtLogin(<?php echo $key[0] ?>, <?php echo $key[3] ?>);"><i class="fa fa-shopping-cart"></i></a>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="product__item__text">
-                                                <h6><a href="#"><?php echo $key[2]?></a></h6>
+                                                <h6><a ><?php echo $key[2]?></a></h6>
                                                 <h5>$<?php echo $key[3]?></h5>
                                             </div>
                                         </div>
@@ -221,8 +221,6 @@ if(isset($_SESSION['user_id'])){
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
-
-        //JavaScript
     <script> 
     var is_loggedIn="<?php echo $is_loggedIn ?>";
     var user_id="<?php echo $user_id ?>";
@@ -246,12 +244,10 @@ if(isset($_SESSION['user_id'])){
                  if(ajaxreq.readyState==4 && ajaxreq.status==200)
                         {
 
-                            console.log('INSIDE ajax');
                              var response=ajaxreq.responseText;
                             
                              var divelm=document.getElementById('shoppingBag');
 
-                            console.log(divelm);
                             
                              divelm.innerHTML=response;
                         }
