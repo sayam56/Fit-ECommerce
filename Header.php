@@ -85,7 +85,7 @@
                        <div class="header__cart">
                            <ul id="shoppingBag">
                            <!-- here you will increment the count from mysql db-->
-                               <li><a href="#"><i class="fa fa-shopping-bag"></i> <span><?php echo $cartCount; ?></span></a></li>
+                               <li><a href="shoping-cart.php"><i class="fa fa-shopping-bag"></i> <span><?php echo $cartCount; ?></span></a></li>
                            </ul>
                            <!-- #<div class="header__cart__price">item: <span>$150.00</span></div> -->
                        </div>
