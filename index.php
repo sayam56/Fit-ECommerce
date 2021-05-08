@@ -6,8 +6,16 @@ $productCount=0;
 //o by default means not logged in, 1 means logged in
 $is_loggedIn=0; 
 $username='';
+$user_id='';
+$cartCount=0;
+
+if ((isset($_SESSION['user_id'])) ) {
+    $user_id=$_SESSION['user_id'];
+}
+
+
 //check if logged in
-if ((isset($_SESSION['username'])) ) {
+if (isset($_SESSION['username']) ) {
     $is_loggedIn=1;
     $username=$_SESSION['username'];
 }
@@ -21,6 +29,18 @@ try{
 }
 catch(PDOException $e){
     echo "<script>window.alert('Database connection error');</script>";
+}
+
+if(isset($_SESSION['user_id'])){
+    //if the user is logged in
+    try{
+        $sql2= "SELECT * FROM `cart` WHERE user_id='".$user_id."'";
+        $object2=$conn->query($sql2);
+        $cartCount=$object2->rowCount();
+
+    }catch(PDOException $e){
+        echo $ex1;
+    }
 }
 
 
@@ -151,7 +171,7 @@ catch(PDOException $e){
                                                 <ul class="product__item__pic__hover">
                                                     <li>
                                                         <!-- <button ></button> -->
-                                                        <a href="#" onclick="promtLogin();"><i class="fa fa-shopping-cart"></i></a>
+                                                        <a href="#" onclick="promtLogin(<?php echo $key[0] ?>, <?php echo $key[3] ?>);"><i class="fa fa-shopping-cart"></i></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -203,88 +223,42 @@ catch(PDOException $e){
     <script src="js/main.js"></script>
 
 
-
-
-		<!-- Selected Exercises Modal -->
-		<div id="selectedExercisesModal" class="modal fade" role="dialog">
-		  <div class="modal-dialog modal-lg">
-		  	<?php
-						echo "<script>
-									console.log('inside selected exercise modal');
-								</script>";
-					?>
-		    <!-- Modal content-->
-		    <div id="modalContent" class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title">Selected Exercises</h4>
-		      </div>
-		      <div id="selectedExercisesModalbody" class="modal-body">
-		      	<div class="table-responsive">
-		      		<table class="col-12" width="100%">
-		      			<thead>
-		      				<tr>
-		      					<th>Exercise ID</th>
-		      					<th>Exercise Name</th>
-		      					<th>Exercise Type</th>
-		      					<th>Exercise Level</th>
-		      					<th>How To Perform</th>
-		      					<th>Remove</th>
-		      				</tr>
-		      			</thead>
-
-		      			<tbody id="tableSection">
-		      			</tbody>
-		      		</table>
-		      	</div><!-- exercise table ends -->
-		      </div><!-- modal body ends here -->
-		      <div class="modal-footer" id="modalFooter">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		      </div>
-
-		      <!-- to show the whole div after ajax -->
-		      <div id="selectedExercisesShowModalList">
-		      	
-		      </div>
-		    </div> <!-- modal Content ends here -->
-
-		  </div>
-		</div> <!-- total modal ends here -->
-
-
-
-
         //JavaScript
     <script> 
     var is_loggedIn="<?php echo $is_loggedIn ?>";
-    console.log(is_loggedIn);
-        function promtLogin(){
+    var user_id="<?php echo $user_id ?>";
+
+        function promtLogin(productID, productPrice){
             if(is_loggedIn == 0){
                 //which means the user is not logged in, then promt the user to log in
 
                 window.alert('Please Log In First!');
+                
 
             }
             else{
                 //just add the product to the card through ajax
-                /* var ajaxreq=new XMLHttpRequest();
-                ajaxreq.open("GET","trainer_ajax.php?select="+ex+"&mem="+member.id+"&fname="+fname+"&email="+email );
-                console.log(member.id);
+                
+                var ajaxreq=new XMLHttpRequest();
+                ajaxreq.open("GET","insertToCart_Ajax.php?productID="+productID+"&user_id="+user_id+"&product_price="+productPrice );
+                //console.log(member.id);
                 ajaxreq.onreadystatechange=function ()
                 {
                  if(ajaxreq.readyState==4 && ajaxreq.status==200)
                         {
+
+                            console.log('INSIDE ajax');
                              var response=ajaxreq.responseText;
                             
-                             var divelm=document.getElementById('showModalEx');
+                             var divelm=document.getElementById('shoppingBag');
 
-                            
+                            console.log(divelm);
                             
                              divelm.innerHTML=response;
                         }
                 }
                 
-                ajaxreq.send(); */
+                ajaxreq.send();
             }
         }
     
