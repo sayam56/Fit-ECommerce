@@ -2900,6 +2900,11 @@ ol {
 	letter-spacing: 2px;
 }
 
+
+.fa-shopping-cart{
+	padding-top: 10px;
+}
+
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
 @media only screen and (min-width: 1200px) {

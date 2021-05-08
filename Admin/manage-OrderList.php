@@ -8,7 +8,7 @@ $con = mysqli_connect('localhost', 'root', '', 'Fit_ecommerce');
 if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['username']);
-    header("location: http://localhost/Clean_food_healthy_life_ecom/login.php");
+    header("location: ../../login.php");
 } else {
     if (isset($_GET['action']) && $_GET['action'] == 'del' && $_GET['rid']) {
         $id = intval($_GET['rid']);

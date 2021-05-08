@@ -41,7 +41,7 @@
                         </li>
 
 
-                        <li><a href="../../login.php"><i class="ti-power-off m-r-5"></i>Logout</a></li>
+                        <li><a href="../../Admin/includes/logout.php"><i class="ti-power-off m-r-5"></i>Logout</a></li>
                     </ul>
                 </li>
 
