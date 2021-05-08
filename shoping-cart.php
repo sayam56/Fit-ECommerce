@@ -55,7 +55,7 @@ if(isset($_SESSION['user_id'])){
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani | Template</title>
+    <title>OFit E-Commerce</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -199,7 +199,7 @@ if(isset($_SESSION['user_id'])){
                         <ul id="CartTotal">
                             <li>Total <span >$0</span></li>
                         </ul>
-                        <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                        <a style="cursor: pointer;" onclick="confirmOrder();" class="primary-btn">Confirm Order</a>
                     </div>
                 </div>
             </div>
@@ -281,12 +281,12 @@ if(isset($_SESSION['user_id'])){
                  if(ajaxreq.readyState==4 && ajaxreq.status==200)
                         {
 
-                            console.log('INSIDE ajax');
+                            //console.log('INSIDE ajax');
                              var response=ajaxreq.responseText;
                             
                              var divelm=document.getElementById('CartTotal');
 
-                            console.log(divelm);
+                            //console.log(divelm);
                             
                              divelm.innerHTML=response;
                         }
@@ -294,6 +294,39 @@ if(isset($_SESSION['user_id'])){
                 
                 ajaxreq.send();
         }
+
+
+    function confirmOrder(){
+        var res= confirm("Are you sure you want to submit the order?");
+
+        if(res == true){
+            var ajaxreq=new XMLHttpRequest();
+                ajaxreq.open("GET","confirmOrder_ajax.php?user_id="+user_id );
+                //console.log(member.id);
+                ajaxreq.onreadystatechange=function ()
+                {
+                 if(ajaxreq.readyState==4 && ajaxreq.status==200)
+                        {
+
+
+                            window.location.replace("index.php");
+                            //console.log('INSIDE ajax');
+                             //var response=ajaxreq.responseText;
+
+                             //console.log(response);
+                            
+                             //var divelm=document.getElementById('CartTotal');
+
+                            //console.log(divelm);
+                            
+                             /* divelm.innerHTML=response; */
+                        }
+                }
+                
+                ajaxreq.send();
+        }
+        
+    }
     </script>
 
 </body>

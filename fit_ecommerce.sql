@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2021 at 07:24 PM
--- Server version: 10.4.18-MariaDB
--- PHP Version: 7.4.16
+-- Generation Time: May 08, 2021 at 11:52 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,59 @@ SET time_zone = "+00:00";
 --
 -- Database: `fit_ecommerce`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_orders`
+--
+
+CREATE TABLE `admin_orders` (
+  `id` int(11) NOT NULL,
+  `cart_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_qty` int(11) NOT NULL,
+  `individual_total` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL,
+  `approved` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `admin_orders`
+--
+
+INSERT INTO `admin_orders` (`id`, `cart_id`, `user_id`, `product_id`, `product_qty`, `individual_total`, `total_price`, `approved`) VALUES
+(18, 82, 4, 8, 5, 6170, 6170, 0),
+(19, 83, 4, 9, 5, 7000, 13170, 0),
+(20, 84, 4, 10, 5, 10, 13180, 0),
+(21, 85, 4, 8, 2, 2468, 2468, 0),
+(22, 86, 4, 9, 4, 5600, 8068, 0),
+(23, 87, 4, 10, 5, 10, 8078, 0),
+(24, 88, 4, 14, 1, 6500, 14578, 0),
+(25, 89, 4, 15, 2, 1000, 15578, 0),
+(26, 90, 4, 16, 5, 75, 15653, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `cart_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_qty` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `product_qty`, `total_price`) VALUES
+(91, 4, 9, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -41,14 +94,16 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `categories`, `Is_Active`, `cat_description`, `PostingDate`, `UpdationDate`) VALUES
-(2, ' grains', 1, '', '2021-05-01 20:53:44', '2021-05-03 16:12:19'),
+(2, ' Grains', 1, 'A grain is a small, hard, dry seed, with or without an attached hull or fruit layer, harvested for human or animal consumption. A grain crop is a grain-producing plant. The two main types of commercial grain crops are cereals and legumes.', '2021-05-01 20:53:44', '2021-05-08 13:13:24'),
 (3, 'vegetables & ice cream', 1, 'this', '2021-05-01 20:53:44', '2021-05-03 16:43:08'),
 (5, 'Dairy ', 1, '', '2021-05-01 20:53:44', '2021-05-01 20:53:44'),
 (7, 'Seeds', 1, '', '2021-05-01 20:53:44', '2021-05-03 16:50:35'),
-(9, 'Spices & sauces', 1, '', '2021-05-01 20:53:44', '2021-05-01 20:53:44'),
+(9, 'Spices & sauces', 1, '', '2021-05-01 20:53:44', '2021-05-08 12:04:14'),
 (11, 'Juices & Drinks', 1, '', '2021-05-01 20:53:44', '2021-05-01 20:53:44'),
 (13, 'Dessert', 1, '', '2021-05-01 20:53:44', '2021-05-01 20:53:44'),
-(14, 'Meal', 1, '', '2021-05-01 20:53:44', '2021-05-02 14:27:11');
+(14, 'Meal', 1, 'All kinds of heavy meals\r\n', '2021-05-01 20:53:44', '2021-05-08 13:32:55'),
+(19, 'Sweets', 1, 'All kinds of small and sweet fruits', '2021-05-08 12:03:35', '2021-05-08 12:03:35'),
+(20, 'Fruits', 1, 'In common language usage, \"fruit\" normally means the fleshy seed-associated structures of a plant that are sweet or sour, and edible in the raw state', '2021-05-08 21:48:03', '2021-05-08 21:48:03');
 
 -- --------------------------------------------------------
 
@@ -126,8 +181,18 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `categories_id`, `product_name`, `product_price`, `qty`, `image`, `short_desc`, `product_details`, `status`, `Is_Active`) VALUES
-(6, 2, 'QUAKER INSTANT OATMEAL JAR 1KG', 400, 6, 'https://www.cellsii.com/images/thumbnails/1133/1133/detailed/23/Quaker-Instant-Oatmeal-Jar-1Kg-Price-in-Bd.jpg', '', 'kfdjgisd mn jhv ,zxmcoei zxncesjiw', 1, 1),
-(8, 7, 'sadafs', 1234, 9, 'https://www.cellsii.com/images/thumbnails/1133/1133/detailed/23/Quaker-Instant-Oatmeal-Jar-1Kg-Price-in-Bd.jpg', '', 'aCCa  fdsczdxv vdf vv', 1, NULL);
+(8, 7, 'Seeds', 1234, 288, 'https://ttseeds.com/wp-content/uploads/2019/04/seeds.png', '', 'A seed is an embryonic plant enclosed in a protective outer covering. The formation of the seed is part of the process of reproduction in seed plants', 1, 1),
+(9, 5, 'MilkVitaa', 1400, 1381, 'https://www.thebasketbd.com/pub/media/catalog/product/cache/08f23f216093c0e51e483fff5c06704d/a/0/a06192.jpg', 'Sample Short Detailsss', 'Milk Vita is a milk production company that produces milk under its own name. It is owned by Bangladesh Milk Producers Co-operative Union Limited, a cooperative managed by itself. Milk Vita has 70 percent market share of liquid milk in Bangladesh.', 1, 1),
+(10, 9, 'Cinnamon', 2, 14960, 'https://images.immediate.co.uk/production/volatile/sites/30/2016/08/Cinnamon-sticks-and-ground-cinnamon-2a732e4.jpg?quality=45&resize=768,574', '', 'Cinnamon is a spice obtained from the inner bark of several tree species from the genus Cinnamomum. Cinnamon is used mainly as an aromatic condiment and flavouring additive in a wide variety of cuisines, sweet and savoury dishes, breakfast cereals, snackfoods, tea and traditional foods.', 1, 1),
+(11, 13, 'Profiteroles', 2500, 6, 'https://images.immediate.co.uk/production/volatile/sites/2/2017/12/xmas-Cover-17v5-54a9395.jpg?quality=90&resize=768%2C574', '', 'Want an impressive Christmas dessert to serve family and friends? Check out this show-stopping chocolate and hazelnut profiterole stack. With creamy Nutella filling and crunchy hazelnut brittle, this stunning recipe is the perfect end to a dinner.', 1, 1),
+(12, 19, 'Christmas cheesecake', 6500, 97, 'https://images.immediate.co.uk/production/volatile/sites/2/2015/10/15165.jpg?webp=true&quality=90&resize=620%2C413', '', 'Want an impressive Christmas dessert to serve family and friends? Check out this show-stopping chocolate and hazelnut profiterole stack. With creamy Nutella filling and crunchy hazelnut brittle, this stunning recipe is the perfect end to a dinner.', 1, 1),
+(13, 13, 'Christmas Yule log', 1500, 100, 'https://images.immediate.co.uk/production/volatile/sites/2/2018/12/Yule-log-6b1c894.jpg?webp=true&quality=90&resize=620%2C413', '', 'Need a show-stopping dessert for over the Christmas period? Check out our indulgent festive yule log with a boozy Baileys cream and crunchy hazelnut brittle.', 1, 1),
+(14, 19, 'Christmas pudding ice cream', 6500, 98, 'https://images.immediate.co.uk/production/volatile/sites/2/2020/11/OLI-1220-Leftovers-XmasPuddingIceCream_00448-e91f25f.jpg?webp=true&quality=90&resize=620%2C413', '', 'A clever way to use up left-over Christmas pudding – add it to ice cream! This four-ingredient, no-churn recipe also comes laced with brandy or rum – the perfect winter pud.', 1, 1),
+(15, 14, 'Silverbeet fatteh with sumac yoghurt and chickpeas', 500, 1396, 'https://img.delicious.com.au/LC7IwDnQ/del/2020/09/silverbeet-fatteh-with-sumac-yoghurt-and-chickpeas-139202-1.jpg', '', '\"Try this dish with roast cauliflower, eggplant or roast pumpkin instead of silverbeet for a variation,\" says Tom Walton. Begin this recipe 1 day ahead', 1, 1),
+(16, 7, 'Burpee Seeds & Plants', 15, 14975, 'https://www.burpee.com/dw/image/v2/ABAQ_PRD/on/demandware.static/-/Sites-masterCatalog_Burpee/default/dw49e1d1e6/Images/Product%20Images/prod000935/prod000935.jpg?sw=322&sh=380&sm=fit', '', 'Just 6-8\" long and 4-5\" across, a single squash is perfect for a family meal.', 1, 1),
+(17, 9, 'Cardamom', 300, 15000, 'https://www.homestratosphere.com/wp-content/uploads/2019/04/Cardamom-Powder-1-17-4.jpg', '', 'Latin name: Elettaria cardamomum\r\n\r\nThis spice is also known as the “Queen of Spices” in India, its country of origin. Cardamom has a strong, pungent flavor that has subtle hints of lemon and mint. Interestingly, it is a very versatile spice so it can be used to intensify both sweet and savory flavors. There are two types of cardamom that are typically used in Indian cooking, as well as all over the world: Green and Black.', 1, 1),
+(19, 14, 'Salmon Dish', 6500, 100, 'https://hips.hearstapps.com/del.h-cdn.co/assets/17/39/2048x1024/landscape-1506456157-delish-honey-garlic-glazed-salmon-1.jpg?resize=980:*', '', 'Make getting your Omega-3s as delicious as possible with these delicious baked, pan-fried, seared, and poached salmon recipes. ', 1, 1),
+(20, 20, 'Fruits and berries', 750, 1700, 'https://previews.123rf.com/images/kitamin/kitamin1809/kitamin180900013/107924290-berries-isolated-on-white-collage-of-different-colors-fruits-and-berries-fruits-and-berries-in-bowl-.jpg', '', 'Which Fruits Are Berries? When classifying fruits into the berry family, the distinctions can be blurred. You might have questions. Are bananas berries?', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -264,6 +329,18 @@ INSERT INTO `videos` (`Video_id`, `Customer_ID`, `video_link`, `Video_descriptio
 --
 
 --
+-- Indexes for table `admin_orders`
+--
+ALTER TABLE `admin_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`cart_id`);
+
+--
 -- Indexes for table `categories`
 --
 ALTER TABLE `categories`
@@ -314,10 +391,22 @@ ALTER TABLE `videos`
 --
 
 --
+-- AUTO_INCREMENT for table `admin_orders`
+--
+ALTER TABLE `admin_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `contact_us`
@@ -341,7 +430,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `users`
