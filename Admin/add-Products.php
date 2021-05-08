@@ -18,10 +18,9 @@ if (isset($_POST['submitpro'])) {
                 $pro_qunty=$_POST['pro_qunty'];
                 $price=$_POST['price'];
                 $pro_img=$_POST['pro_img'];
-
                 $status = 1;
-                $query = mysqli_query($con, "insert into product(categories_id,product_name,product_price,qty,image,product_details,status)
-                values('$category','$product_name','$price','$pro_qunty','$pro_img','$Pro_description','$status')");
+                $query = mysqli_query($con, "insert into product(categories_id,product_name,product_price,qty,image,product_details,status,Is_Active)
+                values('$category','$product_name','$price','$pro_qunty','$pro_img','$Pro_description','$status','1')");
         if ($query) {
              $msg = "PRODUCT Added ";
         } else {

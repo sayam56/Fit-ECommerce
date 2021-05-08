@@ -32,7 +32,9 @@
 				<div class="col-sm-12">
 
 					<div class="wrapper-page">
-
+					<p>
+						<a href="index.php">← Back To Home Page</a>
+					</p>
 						<div class="m-t-40 account-pages">
 							<div class="text-center account-logo-box">
 								<h2 class="text-uppercase">

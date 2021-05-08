@@ -130,7 +130,7 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                                                         <th>Product Quantity</th>
                                                         <th>Product Image</th>
                                                         <th>Short Description</th>
-                                                        <th>Product Detail Image</th>
+                                                        <th>Product Detail</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -161,10 +161,10 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                                                             <td><?php echo htmlentities($row['product_name']); ?></td>
                                                             <td><?php echo htmlentities($row['product_price']); ?></td>
                                                             <td><?php echo htmlentities($row['Quantity']); ?></td>
-                                                            <td><?php echo htmlentities($row['image']); ?></td>
+                                                            <td> <div class="tdwrap"><iframe class="frame" src="<?php echo htmlentities($row['image']); ?>" frameborder="0" scrolling="no" ></iframe></div></td>
                                                             <td><?php echo htmlentities($row['short_desc']); ?></td>
                                                             <td><?php echo htmlentities($row['product_details']); ?></td>
-                                                            <td><?php echo htmlentities($row['Is_Active']); ?></td>
+                                                            
                                                             <td>
                                                                 <a href="edit-Products.php?scid=<?php echo htmlentities($row['P_id']); ?>"><i class="fa fa-pencil" style="color: #29b6f6;"></i></a>
                                                                 &nbsp;<a href="manage-Products.php?scid=<?php echo htmlentities($row['P_id']); ?>&&action=del">

@@ -70,8 +70,6 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                 <!-- Start content -->
                 <div class="content">
                     <div class="container">
-
-
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="page-title-box">
