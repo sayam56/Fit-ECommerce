@@ -1,13 +1,15 @@
 <?php
 session_start();
-include('includes/config.php');
+
+$con= mysqli_connect('localhost', 'root', '', 'fit_ecommerce');
 error_reporting(0);
+
 if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['username']);
-    header("location: http://localhost/Clean_food_healthy_life_ecom/login.php");
+    header("location: ../../login.php");
 } else {
-    if (isset($_POST['submitPro'])) {
+    if (isset($_POST['submit'])) {
         $categoryid = $_POST['category'];
         $product_name = $_POST['pro_name'];
         $categoryid = $_POST['category'];
@@ -121,7 +123,7 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                                     <?php
                                     //fetching Category details
                                     $Pro_id = intval($_GET['scid']);
-                                    $query = mysqli_query($con, "Select product.categories_id ,product.product_name,product.id,product.product_price,product.qty as Quantity,product.image,product.short_desc,product.product_details,categories.categories as catname,categories.id as catid from product INNER join categories on product.categories_id=categories.id AND product.Is_Active=0 AND product.id='$Pro_id'");
+                                    $query = mysqli_query($con, "Select product.categories_id ,product.product_name,product.id,product.product_price,product.qty as Quantity,product.image,product.short_desc,product.product_details,categories.categories as catname,categories.id as catid from product INNER join categories on product.categories_id=categories.id AND product.Is_Active=1 AND product.id='$Pro_id'");
                                     $cnt = 1;
                                     while ($row = mysqli_fetch_array($query)) {
 
@@ -188,7 +190,7 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                                                         <label class="col-md-2 control-label">Product Short Detail
                                                         </label>
                                                         <div class="col-md-10">
-                                                            <textarea class="form-control" rows="5" name="short_desc" required><?php echo htmlentities($row['short_desc']); ?></textarea>
+                                                            <textarea class="form-control" rows="5" name="short_desc"><?php echo htmlentities($row['short_desc']); ?></textarea>
                                                         </div>
                                                     </div>
 
@@ -198,7 +200,7 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                                                     <label class="col-md-2 control-label">&nbsp;</label>
                                                     <div class="col-md-10">
 
-                                                        <button type="submit" class="btn btn-custom waves-effect waves-light btn-md" name="submitPro">
+                                                        <button type="submit" class="btn btn-custom waves-effect waves-light btn-md" name="submit">
                                                             Submit
                                                         </button>
                                                     </div>

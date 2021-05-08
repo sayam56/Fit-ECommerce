@@ -143,7 +143,7 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                                                     ?>
                                                         <tr>
 
-                                                            <td colspan="7" align="center">
+                                                            <td colspan="9" style="text-align:center;">
                                                                 <h3 style="color:red">No record
                                                                     found</h3>
                                                             </td>
@@ -240,10 +240,10 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                                                             <td><?php echo htmlentities($row['product_name']); ?></td>
                                                             <td><?php echo htmlentities($row['product_price']); ?></td>
                                                             <td><?php echo htmlentities($row['Quantity']); ?></td>
-                                                            <td><?php echo htmlentities($row['image']); ?></td>
+                                                            <td> <div class="tdwrap"><iframe class="frame" src="<?php echo htmlentities($row['image']); ?>" frameborder="0" scrolling="no" ></iframe></div></td>
                                                             <td><?php echo htmlentities($row['short_desc']); ?></td>
                                                             <td><?php echo htmlentities($row['product_details']); ?></td>
-                                                            <td><?php echo htmlentities($row['Is_Active']); ?></td>
+                                                            
                                                             <td>
                                                                 <a href="manage-Products.php?resid=<?php echo htmlentities($row['P_id']); ?>"><i class="ion-arrow-return-right" title="Restore this Product"></i></a>
                                                                 &nbsp;<a href="manage-Products.php?scid=<?php echo htmlentities($row['P_id']); ?>&&action=perdel">
