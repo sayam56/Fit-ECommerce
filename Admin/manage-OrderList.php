@@ -5,29 +5,41 @@ $error = "";
 $delmsg = "";
 $con = mysqli_connect('localhost', 'root', '', 'Fit_ecommerce');
 
+//db connection
+try{
+    $conn=new PDO("mysql:host=localhost;dbname=fit_ecommerce;",'root','');
+    echo "<script>console.log('connection successful');</script>";
+    
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e){
+    echo "<script>window.alert('Database connection error');</script>";
+}
+
+
 if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['username']);
     header("location: ../../login.php");
 } else {
-    if (isset($_GET['action']) && $_GET['action'] == 'del' && $_GET['rid']) {
-        $id = intval($_GET['rid']);
-        $query = mysqli_query($con, "update categories set Is_Active='0' where id='$id'");
-        $msg = "Category deleted ";
-    }
-    // Code for restore
-    if (isset($_GET['resid'])) {
-        $id = intval($_GET['resid']);
-        $query = mysqli_query($con, "update categories set Is_Active='1' where id='$id'");
-        $msg = "Category restored successfully";
-    }
+    // if (isset($_GET['action']) && $_GET['action'] == 'del' && $_GET['rid']) {
+    //     $id = intval($_GET['rid']);
+    //     $query = mysqli_query($con, "update categories set Is_Active='0' where id='$id'");
+    //     $msg = "Category deleted ";
+    // }
+    // // Code for restore
+    // if (isset($_GET['resid'])) {
+    //     $id = intval($_GET['resid']);
+    //     $query = mysqli_query($con, "update categories set Is_Active='1' where id='$id'");
+    //     $msg = "Category restored successfully";
+    // }
 
-    // Code for Forever deletionparmdel
-    if (isset($_GET['action'])&&$_GET['action'] == 'parmdel' && $_GET['rid']) {
-        $id = intval($_GET['rid']);
-        $query = mysqli_query($con, "delete from  categories  where id='$id'");
-        $delmsg = "Category deleted forever";
-    }
+    // // Code for Forever deletionparmdel
+    // if (isset($_GET['action'])&&$_GET['action'] == 'parmdel' && $_GET['rid']) {
+    //     $id = intval($_GET['rid']);
+    //     $query = mysqli_query($con, "delete from  categories  where id='$id'");
+    //     $delmsg = "Category deleted forever";
+    // }
 
 ?>
     <!DOCTYPE html>
@@ -35,7 +47,7 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
 
     <head>
 
-        <title>CleanFood&FitLife | Manage Categories</title>
+        <title>CleanFood&FitLife | Manage Order List</title>
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!--        <link href="assets/css/materialdesignicons.css.map" rel="stylesheet" type="text/css"/>-->
         <link href="assets/css/core.css" rel="stylesheet" type="text/css" />
@@ -75,16 +87,16 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="page-title-box">
-                                    <h4 class="page-title">Manage Categories</h4>
+                                    <h4 class="page-title">Manage Order List</h4>
                                     <ol class="breadcrumb p-0 m-0">
                                         <li>
                                             <a href="#">Admin</a>
                                         </li>
                                         <li>
-                                            <a href="#">Category </a>
+                                            <a href="#">Order List </a>
                                         </li>
                                         <li class="active">
-                                            Manage Categories
+                                            Manage Order List
                                         </li>
                                     </ol>
                                     <div class="clearfix"></div>
@@ -116,47 +128,75 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="demo-box m-t-20">
-                                        <div class="m-b-30">
-                                            <a href="add-category.php">
-                                                <button id="addToTable" class="btn btn-success waves-effect waves-light">Add <i class="mdi mdi-plus-circle-outline"></i></button>
-                                            </a>
-                                        </div>
 
                                         <div class="table-responsive">
                                             <table class="table m-0 table-colored-bordered table-bordered-primary">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th> Category</th>
-                                                        <th>Description</th>
-
-                                                        <th>Posting Date</th>
-                                                        <th>Last updation Date</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Product Name</th>
+                                                        <th>Purchased Qty</th>
+                                                        <th>Ind. Total</th>
+                                                        <th>Ledger Total</th>
+                                                        <th>Approaved</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $query = mysqli_query($con, "Select id,categories,cat_description,PostingDate,UpdationDate from  categories where Is_Active=1");
-                                                    $cnt = 1;
-                                                    while ($row = mysqli_fetch_array($query)) {
+                                                    try{
+                                                        $sql= "Select * from admin_orders";
+                                                        $cnt = 1;
+                                                        $adminobject=$conn->query($sql);
+                                                        $adminTab= $adminobject->fetchAll();
+                                                        foreach($adminTab as $key){
+                                                            $usersql = "SELECT username FROM `users` WHERE user_id='".$key[2]."'";
+                                                            $userobject=$conn->query($usersql);
+                                                            $userTab= $userobject->fetchAll();
+                                                            foreach($userTab as $username){
+                                                                $prdcsql = "SELECT product_name FROM `product` WHERE id='".$key[3]."'";
+                                                                $prdcObject=$conn->query($prdcsql);
+                                                                $prdcTab= $prdcObject->fetchAll();
+                                                                foreach($prdcTab as $productName){
+                                                                    ?>
+                                                                    <tr>
+                                                                        <th scope="row"><?php echo htmlentities($cnt); ?></th>
+                                                                        <td><?php echo $username[0]; ?></td> <!-- customer name -->
+                                                                        <td><?php echo $productName[0]; ?></td> <!-- product Name -->
+                                                                        <td><?php echo $key[4]; ?>pcs</td>
+                                                                        <td>$<?php echo $key[5]; ?></td>
+                                                                        <td>$<?php echo $key[6]; ?></td>
+                                                                        <td id="updateApprvVal<?php echo $key[0]; ?>">
+                                                                        <?php
+                                                                        if($key[7] == 0){
+                                                                            echo 'No'; 
+                                                                        }else {
+                                                                            echo 'Yes';
+                                                                        }
+                                                                         
+                                                                         
+                                                                         ?></td> <!-- apprv -->
+                                                                        <td>
+                                                                            <a style="cursor: pointer;" onclick="statusUpdate(1,<?php echo $key[0]; ?>)"><i class="fa fa-check" style="color: #3AF629;"></i></a>
+                                                                            &nbsp;
+                                                                            <a style="cursor: pointer;" onclick="statusUpdate(0,<?php echo $key[0]; ?>)"><i class="fa fa-times" style="color: #f05050"></i></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <?php
+
+                                                                } /* product name */
+                                                                
+                                                            } /* username */
+                                                            
+                                                        $cnt++;
+                                                        }/* admin orders */
+                                                    }catch(PDOException $err){
+                                                        echo $err;
+                                                    }
+
                                                     ?>
 
-                                                        <tr>
-                                                            <th scope="row"><?php echo htmlentities($cnt); ?></th>
-                                                            <td><?php echo htmlentities($row['categories']); ?></td>
-                                                            <td><?php echo htmlentities($row['cat_description']); ?></td>
-                                                            <td><?php echo htmlentities($row['PostingDate']); ?></td>
-                                                            <td><?php echo htmlentities($row['UpdationDate']); ?></td>
-                                                            <td>
-                                                                <a href="edit-category.php?cid=<?php echo ($row['id']); ?>"><i class="fa fa-pencil" style="color: #29b6f6;"></i></a>
-                                                                &nbsp;<a href="manage-categories.php?rid=<?php echo htmlentities($row['id']); ?>&&action=del">
-                                                                    <i class="fa fa-trash-o" style="color: #f05050"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                    <?php
-                                                        $cnt++;
-                                                    } ?>
                                                 </tbody>
 
                                             </table>
@@ -172,61 +212,7 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                             <!--- end row -->
 
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="demo-box m-t-20">
-                                        <div class="m-b-30">
-
-                                            <h4><i class="fa fa-trash-o"></i> Deleted Categories</h4>
-
-                                        </div>
-
-                                        <div class="table-responsive">
-                                            <table class="table m-0 table-colored-bordered table-bordered-danger">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th> Category</th>
-                                                        <th>Description</th>
-
-                                                        <th>Posting Date</th>
-                                                        <th>Last updation Date</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    $query = mysqli_query($con, "Select id,categories,cat_description,PostingDate,UpdationDate from  categories where Is_Active=0");
-                                                    $cnt = 1;
-                                                    while ($row = mysqli_fetch_array($query)) {
-                                                    ?>
-
-                                                        <tr>
-                                                            <th scope="row"><?php echo htmlentities($cnt); ?></th>
-                                                            <td><?php echo htmlentities($row['categories']); ?></td>
-                                                            <td><?php echo htmlentities($row['cat_description']); ?></td>
-                                                            <td><?php echo htmlentities($row['PostingDate']); ?></td>
-                                                            <td><?php echo htmlentities($row['UpdationDate']); ?></td>
-                                                            <td>
-                                                                <a href="manage-categories.php?resid=<?php echo htmlentities($row['id']); ?>"><i class="ion-arrow-return-right" title="Restore this category"></i></a>
-                                                                &nbsp;<a href="manage-categories.php?rid=<?php echo htmlentities($row['id']); ?>&&action=parmdel" title="Delete forever"> <i class="fa fa-trash-o" style="color: #f05050"></i>
-                                                            </td>
-                                                        </tr>
-                                                    <?php
-                                                        $cnt++;
-                                                    } ?>
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-
-
-                            </div>
+                            
 
 
                         </div> <!-- container -->
@@ -239,9 +225,39 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
             <!-- END wrapper -->
 
 
-            <script>
-                var resizefunc = [];
-            </script>
+<script>
+    var resizefunc = [];
+    
+    function statusUpdate(updateVal,admin_orderID){
+        var ajaxreq=new XMLHttpRequest();
+        ajaxreq.open("GET","updateApprv_ajax.php?updateVal="+updateVal+"&admin_orderID="+admin_orderID );
+        //console.log(member.id);
+        ajaxreq.onreadystatechange=function ()
+        {
+        if(ajaxreq.readyState==4 && ajaxreq.status==200)
+                {
+
+
+                    var response=ajaxreq.responseText;
+                    
+                    var divelm=document.getElementById('updateApprvVal'+admin_orderID);
+
+                    if(updateVal == 0){
+                        divelm.innerHTML='No';
+                    }
+                    if(updateVal == 1)
+                    {
+                        divelm.innerHTML='Yes';
+                    }
+
+                    
+                    
+                }
+        }
+        
+        ajaxreq.send();
+    }
+</script>
 
             <!-- jQuery  -->
             <script src="assets/js/jquery.min.js"></script>

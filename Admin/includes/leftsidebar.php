@@ -49,7 +49,6 @@
                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-format-list-bulleted"></i>
                         <span>Order List </span> <span class="menu-arrow"></span></a>
                     <ul class="list-unstyled">
-                        <li><a href="check-OrderList.php">Check OrderList</a></li>
                         <li><a href="manage-OrderList.php">Manage Order List</a></li>
                     </ul>
                 </li>
