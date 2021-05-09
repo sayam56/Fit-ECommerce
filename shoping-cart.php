@@ -55,7 +55,7 @@ if(isset($_SESSION['user_id'])){
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>OFit E-Commerce</title>
+    <title>Fit E-Commerce</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -137,7 +137,7 @@ if(isset($_SESSION['user_id'])){
 
                                     foreach ($productTab as $productInfo) {
                                         ?>
-                                        <tr>
+                                        <tr id="cartRow<?php echo $key[2]; ?>">
                                             <td class="shoping__cart__item shopping_cart_img">
                                                 <img src="<?php echo $productInfo[5]; ?>" alt="">
                                                 <h5><?php echo $productInfo[2]; ?></h5>
@@ -160,7 +160,7 @@ if(isset($_SESSION['user_id'])){
                                             $<?php echo $key[4]; ?>
                                             </td>
                                             <td class="shoping__cart__item__close">
-                                                <span class="icon_close"></span>
+                                                <span class="icon_close" onclick="deleteCartItem(<?php echo $key[2]; ?>, <?php echo $productInfo[4]; ?>);"></span>
                                             </td>
                                         </tr>
                                         <?php
@@ -310,6 +310,41 @@ if(isset($_SESSION['user_id'])){
 
 
                             window.location.replace("index.php");
+                            //console.log('INSIDE ajax');
+                             //var response=ajaxreq.responseText;
+
+                             //console.log(response);
+                            
+                             //var divelm=document.getElementById('CartTotal');
+
+                            //console.log(divelm);
+                            
+                             /* divelm.innerHTML=response; */
+                        }
+                }
+                
+                ajaxreq.send();
+        }
+        
+    }
+
+
+
+    function deleteCartItem(product_id, availableQty){
+        var res= confirm("Are you sure you want to delete the item?");
+
+        if(res == true){
+            var ajaxreq=new XMLHttpRequest();
+                ajaxreq.open("GET","deleteCartItem_ajax.php?product_id="+product_id+"&user_id="+user_id );
+                //console.log(member.id);
+                ajaxreq.onreadystatechange=function ()
+                {
+                 if(ajaxreq.readyState==4 && ajaxreq.status==200)
+                        {
+
+
+                            //window.location.replace("index.php");
+                            $('#cartRow'+product_id).hide("slow");
                             //console.log('INSIDE ajax');
                              //var response=ajaxreq.responseText;
 
