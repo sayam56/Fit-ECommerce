@@ -111,9 +111,9 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
 
     <body>
             <!-- Page Preloder -->
-   <!--  <div id="preloder">
+    <div id="preloder">
         <div class="loader"></div>
-    </div> -->
+    </div>
 
     <!-- Humberger Begin -->
     <?php include('Humberger.php') ?>
@@ -205,32 +205,31 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
         <div class="modal-body">
         <ul class="nav navbar-nav navbar-right">
 
-<div style="float: right" style="padding-right: 20px;">
-    
-    <div class="form-popup" id="myForm">
-        <form action="video.php" class="form-container" method="post" style="text-align: center;">
-            <!-- <h1>ADD video</h1> -->
-            <label for="email"><b>Video Tittle</b></label>
-            <input type="text" placeholder="Tittle" name="Video_Tittle" required>
-                <br>
-            <label for="psw"><b>Video Link</b></label>
-            <input type="text" placeholder="Enter You Tube Link" name="link" required>
-            <br>
-            <label for="psw"><b>Calories</b></label>
-            <input type="number" placeholder="Calories" name="cal" required>
-            <br>
-            <label for="psw"><b>Video Description</b></label>
-            <input type="text" placeholder="Video Description" name="des" required>
-            <br>
+        <div style="padding-right: 20px;">
+            
+            <div class="form-popup" id="myForm" >
+                <form action="video.php" class="form-container vidForm" method="post" style="text-align: center;">
+                    <!-- <h1>ADD video</h1> -->
+                    <label for="email"><b>Video Title: </b></label>
+                    <input type="text" placeholder="Tittle" name="Video_Tittle" class="modalForm" required>
+                        <br>
+                    <label for="psw"><b>Video Link: </b></label>
+                    <input type="text" placeholder="Enter You Tube Link" name="link" class="modalForm" required>
+                    <br>
+                    <label for="psw"><b>Calories: </b></label>
+                    <input type="number" placeholder="Calories" name="cal" class="modalForm" required>
+                    <br>
+                    <label for="psw"><b>Video Description: </b></label>
+                    <input type="text" placeholder="Video Description" name="des" class="modalForm" required>
+                    <br>
 
-            <button type="submit" class="btn" name="submitV" style="border: 2px solid black; background: lawngreen;">ADD</button>
-        </form>
-    </div>
-</div>
+                    <button type="submit" class="btn vidAddBtn" name="submitV" style="border: 2px solid black; background: #7fad39;">ADD</button>
+                </form>
+            </div>
+        </div>
 
 </ul>
 
-            <h3 style="text-align:center; color: red; margin-bottom:15px;" > Thank You <h3>
             
         </div>
 

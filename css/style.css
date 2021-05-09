@@ -1932,7 +1932,8 @@ ol {
    
 	color: white;
    }
-   
+
+
    /*----------------------------------------------------------------------------------*/
 
 .product__details__tab {
@@ -3058,6 +3059,28 @@ ol {
 	padding-top: 10px;
 }
 
+
+.modalForm{
+	border: none;
+	border-bottom: 1px solid #7fad39;
+	text-align: center;
+	width: 500px;
+}
+
+.modalForm:hover{
+	border-bottom: 2px solid #7fad39;
+}
+
+.vidForm{
+  width: auto;
+  text-align: center;
+}
+
+.vidAddBtn{
+	color: white;
+	margin-top: 15px;
+	border: 2px solid #7fad39;
+}
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
 @media only screen and (min-width: 1200px) {
