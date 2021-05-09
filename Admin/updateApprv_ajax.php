@@ -24,6 +24,16 @@
                $upd_sql = "UPDATE admin_orders SET approved='$updateVal' WHERE id='$admin_orderID' "  ;
                $upd_obj = $conn->prepare($upd_sql)->execute();
 
+               if($updateVal == 1){
+                    //approved items will be sent for notifications
+                    $sql= "SELECT * FROM `admin_orders` WHERE id='".$admin_orderID."' AND approved='1' ";
+                    $object=$conn->query($sql);
+                    $orderTab=$object-> fetchAll();
+                    foreach($orderTab as $ordrTab){
+                         $inssql= "INSERT INTO notifications (user_id, admin_order_id, product_id, product_qty, total_price, seen) VALUES ('".$ordrTab[2]."','".$ordrTab[0]."','".$ordrTab[3]."','".$ordrTab[4]."','".$ordrTab[5]."','0' )";
+                         $insobject=$conn->query($inssql);
+                    }
+               }
 
                
                echo "<script>console.log('Update SUCCESSFULL!!!!');</script>";

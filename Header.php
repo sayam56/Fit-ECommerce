@@ -82,6 +82,10 @@
                    </div>
                    <div class="col-lg-3">
                        <div class="header__cart">
+                       <ul id="bellIcon" onclick="openModal(),updateNoti();">
+                           <!-- here you will increment the count from mysql db-->
+                               <li id="shoppingC" ><a style="cursor: pointer;"><i class="fa fa-bell"></i> <span><?php echo $notiCount; ?></span></a></li>
+                           </ul>
                            <ul id="shoppingBag" onclick="redirect();">
                            <!-- here you will increment the count from mysql db-->
                                <li id="shoppingC" ><a href="shoping-cart.php"><i class="fa fa-shopping-bag"></i> <span><?php echo $cartCount; ?></span></a></li>

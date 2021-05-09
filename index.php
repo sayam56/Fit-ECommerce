@@ -1,25 +1,6 @@
 <?php
 session_start();
 
-$productCount=0;
-
-//o by default means not logged in, 1 means logged in
-$is_loggedIn=0; 
-$username='';
-$user_id='';
-$cartCount=0;
-
-if ((isset($_SESSION['user_id'])) ) {
-    $user_id=$_SESSION['user_id'];
-}
-
-
-//check if logged in
-if (isset($_SESSION['username']) ) {
-    $is_loggedIn=1;
-    $username=$_SESSION['username'];
-}
-
 //db connection
 try{
     $conn=new PDO("mysql:host=localhost;dbname=fit_ecommerce;",'root','');
@@ -30,6 +11,40 @@ try{
 catch(PDOException $e){
     echo "<script>window.alert('Database connection error');</script>";
 }
+
+$productCount=0;
+
+//o by default means not logged in, 1 means logged in
+$is_loggedIn=0; 
+$username='';
+$user_id='';
+$cartCount=0;
+$notiCount=0;
+
+if ((isset($_SESSION['user_id'])) ) {
+    $user_id=$_SESSION['user_id'];
+}
+
+
+//check if logged in
+if (isset($_SESSION['username']) ) {
+    $is_loggedIn=1;
+    $username=$_SESSION['username'];
+
+    //checkNotifications
+    try{
+        $sql= "SELECT * FROM `notifications` WHERE user_id='".$user_id."' AND seen='0' ";
+        $object=$conn->query($sql);
+        $notiCount=$object->rowCount();
+
+    }catch(PDOException $e){
+        echo $ex1;
+    }
+
+
+}
+
+
 
 if(isset($_SESSION['user_id'])){
     //if the user is logged in
@@ -206,6 +221,87 @@ if(isset($_SESSION['user_id'])){
         </div>
     </section>
     <!-- Product Section End -->
+    <!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div id="animation" >
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                
+            </div>
+            <div class="modal-body">
+            <H4>The following orders have been approved:</H4>
+
+            <br><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="demo-box m-t-20">
+
+                        <div class="table-responsive">
+                            <table class="table m-0 table-colored-bordered table-bordered-primary" style="padding: 10px;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product Name</th>
+                                        <th>Purchased Qty</th>
+                                        <th>Ind. Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php 
+                                    try{
+                                        $sql= "SELECT * FROM `notifications` WHERE user_id='".$user_id."' AND seen='0' ";
+                                        $object=$conn->query($sql);
+                                        $notiTab=$object->fetchAll();
+                                        $count=1;
+                                        foreach($notiTab as $notiRow){
+                                            //notiRow[3] has product ID
+
+                                            $prdcsql= "SELECT product_name FROM `product` WHERE id='".$notiRow[3]."'";
+                                            $prdcobj=$conn->query($prdcsql);
+                                            $prdTab=$prdcobj->fetchAll();
+                                            foreach($prdTab as $prdName){
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $count; ?></td>
+                                                    <td><?php echo $prdName[0]; ?></td>
+                                                    <td><?php echo $notiRow[4]; ?>pcs</td>
+                                                    <td><?php echo $notiRow[5]; ?></td>
+                                                </tr>
+                                                
+                                                <?php
+
+                                            }
+
+                                            
+                                            $count++;
+                                        }
+                                
+                                    }catch(PDOException $ee){
+                                        echo $ee;
+                                    }
+                                
+                                ?>  
+                                
+                                </tbody>
+                            </table>
+                        </div><!-- table responsive -->        
+                    </div><!-- demo box -->
+                </div><!-- col md -->
+            </div><!-- row -->
+            <br><br>
+
+            <h3 style="text-align:center; color: red; margin-bottom:15px;" > Thank You <h3>
+                
+            </div>
+
+        </div><!-- animation -->
+    </div>
+
+</div> <!-- mymodal ends -->
+
 
     <!-- Footer Section Begin -->
     <?php include('fotor.php') ?>
@@ -255,6 +351,69 @@ if(isset($_SESSION['user_id'])){
                 
                 ajaxreq.send();
             }
+        }
+
+
+        
+        function openModal(){
+
+            if(is_loggedIn == 0){
+                //which means the user is not logged in, then promt the user to log in
+
+                window.alert('Please Log In To See Notifications!');
+            }else{
+                // Get the modal
+                var modal = document.getElementById("myModal");
+
+                // Get the button that opens the modal
+                var btn = document.getElementById("myBtn");
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks the button, open the modal 
+
+                modal.style.display = "block";
+
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                modal.style.display = "none";
+
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                if (event.target == modal) {
+                modal.style.display = "none";
+                }
+                }
+            }
+        } /* open modal ends */
+
+        function updateNoti(){
+            //since the window has been updated and the notifications has been seen, it needs to go out
+            
+            var ajaxreq=new XMLHttpRequest();
+                ajaxreq.open("GET","updateNotiStatus_ajax.php?user_id="+user_id );
+                //console.log(member.id);
+                ajaxreq.onreadystatechange=function ()
+                {
+                 if(ajaxreq.readyState==4 && ajaxreq.status==200)
+                        {
+                            //also the notification count has to be updated
+                             var response=ajaxreq.responseText;
+                            
+                             var divelm=document.getElementById('bellIcon');
+
+                            
+                             divelm.innerHTML=response;
+                        }
+                }
+                
+                ajaxreq.send();
+            
+
         }
     
     

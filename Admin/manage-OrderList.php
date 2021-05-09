@@ -244,10 +244,12 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
 
                     if(updateVal == 0){
                         divelm.innerHTML='No';
+                        divelm.style.color = "Red";
                     }
                     if(updateVal == 1)
                     {
                         divelm.innerHTML='Yes';
+                        divelm.style.color = "#00FF40";
                     }
 
                     
