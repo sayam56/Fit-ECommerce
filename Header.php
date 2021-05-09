@@ -64,7 +64,7 @@
                            <p style="font: 30px solid bolad; color:green">CleanFood&HealthyLife</p>
                        </div>
                    </div>
-                   <div class="col-lg-6">
+                   <div class="col-lg-6" style="padding-left: 50px;">
                        <nav class="header__menu">
                            <ul>
                                <!-- <li class="active"><a href="index.php">Home</a></li> -->
@@ -74,9 +74,10 @@
                                        <li><a href="shoping-cart.php">Shopping Cart</a></li>
                                    </ul>
                                </li>
+                               <li><a href="video.php">Recipes</a></li>
                                <li><a href="contact.php">Contact Us</a></li>
-                               <li><a href="video.php">Receipes</a></li>
-                               <li><a href="chat.php">Nutritionist</a></li>
+                               
+                               <!-- <li><a href="chat.php">Nutritionist</a></li> -->
                            </ul>
                        </nav>
                    </div>

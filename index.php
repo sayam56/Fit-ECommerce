@@ -221,6 +221,7 @@ if(isset($_SESSION['user_id'])){
         </div>
     </section>
     <!-- Product Section End -->
+    
     <!-- The Modal -->
 <div id="myModal" class="modal">
 
@@ -384,9 +385,9 @@ if(isset($_SESSION['user_id'])){
 
                 // When the user clicks anywhere outside of the modal, close it
                 window.onclick = function(event) {
-                if (event.target == modal) {
-                modal.style.display = "none";
-                }
+                    if (event.target == modal) {
+                    modal.style.display = "none";
+                    }
                 }
             }
         } /* open modal ends */

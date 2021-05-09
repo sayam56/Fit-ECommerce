@@ -1,16 +1,68 @@
 <?php
 session_start();
 
-$user_id = $_SESSION['user_id'];
-// print($user_id);
+//db connection
+try{
+    $conn=new PDO("mysql:host=localhost;dbname=fit_ecommerce;",'root','');
+    echo "<script>console.log('connection successful');</script>";
+    
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e){
+    echo "<script>window.alert('Database connection error');</script>";
+}
 
-$msg = "";
-$name = "";
+$productCount=0;
+
+//o by default means not logged in, 1 means logged in
+$is_loggedIn=0; 
+$username='';
+$user_id='';
+$cartCount=0;
+$notiCount=0;
+
+if ((isset($_SESSION['user_id'])) ) {
+    $user_id=$_SESSION['user_id'];
+}
+
+
+//check if logged in
+if (isset($_SESSION['username']) ) {
+    $is_loggedIn=1;
+    $username=$_SESSION['username'];
+
+    //checkNotifications
+    try{
+        $sql= "SELECT * FROM `notifications` WHERE user_id='".$user_id."' AND seen='0' ";
+        $object=$conn->query($sql);
+        $notiCount=$object->rowCount();
+
+    }catch(PDOException $e){
+        echo $ex1;
+    }
+
+
+}
+
+
+
+if(isset($_SESSION['user_id'])){
+    //if the user is logged in
+    try{
+        $sql2= "SELECT * FROM `cart` WHERE user_id='".$user_id."'";
+        $object2=$conn->query($sql2);
+        $cartCount=$object2->rowCount();
+
+    }catch(PDOException $e){
+        echo $ex1;
+    }
+}
+
 $con = mysqli_connect('localhost', 'root', '', 'Fit_ecommerce');
 if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['username']);
-    header("location: http://localhost/Clean_food_healthy_life_ecom/");
+    header("location: index.php");
 } else {
     if (isset($_POST['submitV'])) {
         $Video_Tittle = $_POST['Video_Tittle'];
@@ -26,7 +78,11 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
             $error = "Something went wrong . Please try again.";
         }
     }
+
+
 ?>
+
+
 
     <!DOCTYPE html>
     <html lang="zxx">
@@ -54,67 +110,46 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
     </head>
 
     <body>
-        <?php include('Humberger.php') ?>
-        <div class="navbar navbar-default " role="navigation" style="background-color: lawngreen;width: 100%">
-            <div class="navbar navbar-default" role="navigation">
-                <div class="container">
+            <!-- Page Preloder -->
+   <!--  <div id="preloder">
+        <div class="loader"></div>
+    </div> -->
+
+    <!-- Humberger Begin -->
+    <?php include('Humberger.php') ?>
+    <!-- Humberger End -->
 
 
-                    <!-- Navbar-left -->
-                    <p style="float: left; padding:20px; display: inline ; margin-right: 10px ">
-                        <a href="http://localhost/Clean_food_healthy_life_ecom/index.php" class="logo" "><span>Home<span>Page</span></span><i class=" mdi mdi-layers"></i></a>
-
-                        <a href="#About" class="logo" style="padding-left: 20px;"><span>ABOUT<span>US</span></span><i class="mdi mdi-layers"></i></a>
-
-                        <a href="http://localhost/Clean_food_healthy_life_ecom" class="logo" style="padding-left: 20px;"><span>Log<span>OUT</span></span><i class="mdi mdi-layers"></i></a>
-                    </p>
-                    <!-- Right(Notification) -->
-                    <ul class="nav navbar-nav navbar-right">
-
-                        <div style="float: right" style="padding-right: 20px;">
-                            <button class="button-menu-mobile open-right waves-effect" onclick="openForm()" style="padding-left: 20px;">
-                                ADD
-                            </button>
-                        <div class="form-popup" id="myForm">
-                            <form action="video.php" class="form-container" method="post">
-                                <!-- <h1>ADD video</h1> -->
-                                <label for="email"><b>Video Tittle</b></label>
-                                <input type="text" placeholder="Tittle" name="Video_Tittle" required>
-
-                                <label for="psw"><b>Video Link</b></label>
-                                <input type="text" placeholder="Enter You Tube Link" name="link" required>
-
-                                <label for="psw"><b>Calories</b></label>
-                                <input type="number" placeholder="Calories" name="cal" required>
-
-                                <label for="psw"><b>Video Description</b></label>
-                                <input type="text" placeholder="Video Description" name="des" required>
+    <?php include('Header.php') ?>
 
 
-                                <button type="submit" class="btn" name="submitV">ADD</button>
-                                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-                            </form>
+    
+            <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Recipe Videos</h2>
+                        <div class="breadcrumb__option">
+                            <a href="./index.html">Home</a>
+                            <span>Recipe Videos</span>
                         </div>
-
-                        <script>
-                            function openForm() {
-                                document.getElementById("myForm").style.display = "block";
-                            }
-
-                            function closeForm() {
-                                document.getElementById("myForm").style.display = "none";
-                            }
-                        </script>
-                        </div>
-
-                    </ul>
-
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="section-title">
-            <h2>Recepie Videos</h2>
-        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <div class="m-b-30">
+        <a style="cursor: pointer;">
+            <button id="addToTable" onclick="openModal()" style="padding: 5px; margin-left:190px; margin-top: 20px; margin-bottom:-190px;" class="btn btn-success waves-effect waves-light">Add Videos<i class="mdi mdi-plus-circle-outline"></i></button>
+        </a>
+    </div>
+
+
+
 
         <div class="container py-5" style="margin-top: 20px">
 
@@ -131,20 +166,17 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
                 ?>
 
                         <div class="col-md-3">
-                            <div class="card">
+                            <div class="card" style="margin-bottom:35px;">
 
                                 <div class="card-body">
-                                    <h2 class="card-tittle"><?php echo $row['Tiitle']; ?></h2>
+                                    <h4 class="card-tittle"><?php echo $row['Tiitle']; ?></h4>
                                     <iframe class="card-img-top" src="<?php echo $url; ?>">
                                     </iframe>
                                     <?php
 
                                     ?>
-                                    <h3 class="card-tittle"> Posted by : <?php echo $row['username']; ?></h3>
-                                    <h3 class="card-tittle"> Calories : <?php echo $row['calorie']; ?></h3>
-                                    <!-- <h3 class="card-tittle"> <?php echo $row['Tiitle']; ?></h3> -->
-                                    <!-- <h3 class="card-tittle"> <?php echo $row['Video_description']; ?></h3> -->
-                                    <!-- <p class="card-text"><?php echo $row['Video_description']; ?></p> -->
+                                    <h5 class="card-tittle"> Posted by : <?php echo $row['username']; ?></h5>
+                                    <h5 class="card-tittle"> Calories : <?php echo $row['calorie']; ?></h5>
                                 </div>
 
                             </div>
@@ -160,6 +192,52 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
             </div>
 
         </div>
+            <!-- The Modal -->
+<div id="myModal" class="modal">
+
+<!-- Modal content -->
+<div class="modal-content">
+    <div id="animation" >
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            
+        </div>
+        <div class="modal-body">
+        <ul class="nav navbar-nav navbar-right">
+
+<div style="float: right" style="padding-right: 20px;">
+    
+    <div class="form-popup" id="myForm">
+        <form action="video.php" class="form-container" method="post" style="text-align: center;">
+            <!-- <h1>ADD video</h1> -->
+            <label for="email"><b>Video Tittle</b></label>
+            <input type="text" placeholder="Tittle" name="Video_Tittle" required>
+                <br>
+            <label for="psw"><b>Video Link</b></label>
+            <input type="text" placeholder="Enter You Tube Link" name="link" required>
+            <br>
+            <label for="psw"><b>Calories</b></label>
+            <input type="number" placeholder="Calories" name="cal" required>
+            <br>
+            <label for="psw"><b>Video Description</b></label>
+            <input type="text" placeholder="Video Description" name="des" required>
+            <br>
+
+            <button type="submit" class="btn" name="submitV" style="border: 2px solid black; background: lawngreen;">ADD</button>
+        </form>
+    </div>
+</div>
+
+</ul>
+
+            <h3 style="text-align:center; color: red; margin-bottom:15px;" > Thank You <h3>
+            
+        </div>
+
+    </div><!-- animation -->
+</div>
+
+</div> <!-- mymodal ends -->
         <a name="About"></a>
         <?php include('fotor.php') ?>
 
@@ -173,8 +251,40 @@ if ((!isset($_SESSION['username'])) || isset($_GET['logout'])) {
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/main.js"></script>
 
+        <?php } ?>
 
+
+<SCRIPT>
+    function openModal(){
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+
+        modal.style.display = "block";
+
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+        modal.style.display = "none";
+
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+            modal.style.display = "none";
+            }
+        }
+    }
+
+</SCRIPT>
     </body>
 
     </html>
-<?php } ?>
