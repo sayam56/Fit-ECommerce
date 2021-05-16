@@ -1,0 +1,43 @@
+Things That I did so far:
+
+fixed the admin panels table mismatch
+fixed add product query (add hocchilo but show hocchilo na)
+fixed edit product
+edited the landing page so that only uploaded products are shown
+implemented proper logout system
+edited all the session logouts
+edited the landing page where uploaded categories are shown
+added image view in the admin panel
+added product view in the landing page
+added logged in checkup for adding to cart
+Updated login routing
+created cart table
+insert cart table with ajax+update cart icon dynamically
+added data retrieve with refresh for cart icon
+edited cart page front end + button hover animation
+added cart data from db
+implemented custom quantity button
+updated total price dynamically
+updated price qty in db
+caculated total amount from db
+submit for admin check
+created admin orders db
+copied data from cart of admin orders
+updated contact page -> fixed template and updated map
+
+Product deletion
+show the order table in admin page
+approval system
+live update in order list table with colors
+fix recepies page
+implemented modal
+fixed hero image
+
+
+
+TODO:
+add nutritionist page
+design Chat UI
+implement CHAT
+
+

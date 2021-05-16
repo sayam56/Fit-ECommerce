@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2021 at 11:52 PM
+-- Generation Time: May 09, 2021 at 05:57 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -38,21 +38,6 @@ CREATE TABLE `admin_orders` (
   `approved` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `admin_orders`
---
-
-INSERT INTO `admin_orders` (`id`, `cart_id`, `user_id`, `product_id`, `product_qty`, `individual_total`, `total_price`, `approved`) VALUES
-(18, 82, 4, 8, 5, 6170, 6170, 0),
-(19, 83, 4, 9, 5, 7000, 13170, 0),
-(20, 84, 4, 10, 5, 10, 13180, 0),
-(21, 85, 4, 8, 2, 2468, 2468, 0),
-(22, 86, 4, 9, 4, 5600, 8068, 0),
-(23, 87, 4, 10, 5, 10, 8078, 0),
-(24, 88, 4, 14, 1, 6500, 14578, 0),
-(25, 89, 4, 15, 2, 1000, 15578, 0),
-(26, 90, 4, 16, 5, 75, 15653, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -66,13 +51,6 @@ CREATE TABLE `cart` (
   `product_qty` int(11) NOT NULL,
   `total_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `product_qty`, `total_price`) VALUES
-(91, 4, 9, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -130,6 +108,22 @@ INSERT INTO `contact_us` (`id`, `name`, `email`, `mobile`, `comment`, `added_on`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `admin_order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_qty` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL,
+  `seen` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orderlist`
 --
 
@@ -181,9 +175,9 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `categories_id`, `product_name`, `product_price`, `qty`, `image`, `short_desc`, `product_details`, `status`, `Is_Active`) VALUES
-(8, 7, 'Seeds', 1234, 288, 'https://ttseeds.com/wp-content/uploads/2019/04/seeds.png', '', 'A seed is an embryonic plant enclosed in a protective outer covering. The formation of the seed is part of the process of reproduction in seed plants', 1, 1),
+(8, 7, 'Seeds', 1234, 291, 'https://ttseeds.com/wp-content/uploads/2019/04/seeds.png', '', 'A seed is an embryonic plant enclosed in a protective outer covering. The formation of the seed is part of the process of reproduction in seed plants', 1, 1),
 (9, 5, 'MilkVitaa', 1400, 1381, 'https://www.thebasketbd.com/pub/media/catalog/product/cache/08f23f216093c0e51e483fff5c06704d/a/0/a06192.jpg', 'Sample Short Detailsss', 'Milk Vita is a milk production company that produces milk under its own name. It is owned by Bangladesh Milk Producers Co-operative Union Limited, a cooperative managed by itself. Milk Vita has 70 percent market share of liquid milk in Bangladesh.', 1, 1),
-(10, 9, 'Cinnamon', 2, 14960, 'https://images.immediate.co.uk/production/volatile/sites/30/2016/08/Cinnamon-sticks-and-ground-cinnamon-2a732e4.jpg?quality=45&resize=768,574', '', 'Cinnamon is a spice obtained from the inner bark of several tree species from the genus Cinnamomum. Cinnamon is used mainly as an aromatic condiment and flavouring additive in a wide variety of cuisines, sweet and savoury dishes, breakfast cereals, snackfoods, tea and traditional foods.', 1, 1),
+(10, 9, 'Cinnamon', 2, 14959, 'https://images.immediate.co.uk/production/volatile/sites/30/2016/08/Cinnamon-sticks-and-ground-cinnamon-2a732e4.jpg?quality=45&resize=768,574', '', 'Cinnamon is a spice obtained from the inner bark of several tree species from the genus Cinnamomum. Cinnamon is used mainly as an aromatic condiment and flavouring additive in a wide variety of cuisines, sweet and savoury dishes, breakfast cereals, snackfoods, tea and traditional foods.', 1, 1),
 (11, 13, 'Profiteroles', 2500, 6, 'https://images.immediate.co.uk/production/volatile/sites/2/2017/12/xmas-Cover-17v5-54a9395.jpg?quality=90&resize=768%2C574', '', 'Want an impressive Christmas dessert to serve family and friends? Check out this show-stopping chocolate and hazelnut profiterole stack. With creamy Nutella filling and crunchy hazelnut brittle, this stunning recipe is the perfect end to a dinner.', 1, 1),
 (12, 19, 'Christmas cheesecake', 6500, 97, 'https://images.immediate.co.uk/production/volatile/sites/2/2015/10/15165.jpg?webp=true&quality=90&resize=620%2C413', '', 'Want an impressive Christmas dessert to serve family and friends? Check out this show-stopping chocolate and hazelnut profiterole stack. With creamy Nutella filling and crunchy hazelnut brittle, this stunning recipe is the perfect end to a dinner.', 1, 1),
 (13, 13, 'Christmas Yule log', 1500, 100, 'https://images.immediate.co.uk/production/volatile/sites/2/2018/12/Yule-log-6b1c894.jpg?webp=true&quality=90&resize=620%2C413', '', 'Need a show-stopping dessert for over the Christmas period? Check out our indulgent festive yule log with a boozy Baileys cream and crunchy hazelnut brittle.', 1, 1),
@@ -322,7 +316,8 @@ INSERT INTO `videos` (`Video_id`, `Customer_ID`, `video_link`, `Video_descriptio
 (2, 4, 'https://www.youtube.com/watch?v=lyg6XfP5r0M', 'Fat Burner Soup | Low calorie, high fibre fat burning soup | Essential part of a controlled diet\r\n', '60', 'Carrot', 0),
 (3, 5, 'https://www.youtube.com/watch?v=WoftcZDfeoQ', 'ntjfnhlih', '343', 'Problem', 0),
 (6, 8, 'https://www.youtube.com/watch?v=WoftcZDfeoQ', ' scnkjdcnd', '1234', 'mmm', 1),
-(8, 4, 'https://www.youtube.com/watch?v=WoftcZDfeoQ', ' problem', '12', 'hksajhq', 1);
+(8, 4, 'https://www.youtube.com/watch?v=WoftcZDfeoQ', ' problem', '12', 'hksajhq', 1),
+(9, 4, 'https://www.youtube.com/watch?v=x5quhVqGeKw', ' Awesome Food Compilation | Tasty Food Videos! #7', '250', 'Awesome Food Compilation', 1);
 
 --
 -- Indexes for dumped tables
@@ -350,6 +345,12 @@ ALTER TABLE `categories`
 -- Indexes for table `contact_us`
 --
 ALTER TABLE `contact_us`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -394,13 +395,13 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `admin_orders`
 --
 ALTER TABLE `admin_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -413,6 +414,12 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `contact_us`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `orderlist`
@@ -442,7 +449,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `Video_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Video_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

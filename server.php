@@ -90,22 +90,25 @@ if (isset($_POST['login_user'])) {
         $_SESSION['username'] = $username;
         $_SESSION['success'] = "You are now logged in";
 
-        $result = mysqli_query($db,"SELECT `usertype` FROM `users` WHERE `username` = '$username'") or die($query."<br/><br/>".mysqli_error($db));
+        $result = mysqli_query($db,"SELECT * FROM `users` WHERE `username` = '$username'") or die($query."<br/><br/>".mysqli_error($db));
         $row = mysqli_fetch_array($result); 
-        $user_type=$row[0];
-        print_r($row[0]);
+        $user_type=$row['usertype'];
+        // print_r($row[0]);
         if($user_type==0 ){
-          $result = mysqli_query($db,"SELECT `user_id` FROM `users` WHERE `username` = '$username'") or die($query."<br/><br/>".mysqli_error($db));
+          $result = mysqli_query($db,"SELECT * FROM `users` WHERE `username` = '$username'") or die($query."<br/><br/>".mysqli_error($db));
           $row = mysqli_fetch_array($result); 
-          $_SESSION['user_id'] = $row[0];    
-          
+          $_SESSION['user_id'] = $row[0];
+          $_SESSION['username'] = $row['username'];
           header('location: index.php');
         }
         if($user_type==1 ){
           header('location: Admin/index.php');
+
         }
         if($user_type==2){
           header('location: Nutri/nutritionist.php');
+        $_SESSION['user_id'] = $row[0];
+        $_SESSION['username'] = $row['username'];
         }
 
       }

@@ -1975,6 +1975,7 @@ ol {
 	margin-right: 0;
 }
 
+
 .product__details__tab .nav-tabs li a {
 	font-size: 16px;
 	color: #999999;
@@ -3118,6 +3119,16 @@ ol {
 	}
 }
 
+.productName{
+	cursor: pointer;
+	color: #11ff00;
+	text-decoration: underline;
+}
+.productName:hover{
+	text-decoration: underline;
+	cursor: pointer;
+	color: #11ff00;
+}
 /* Tablet Device = 768px */
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {

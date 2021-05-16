@@ -173,7 +173,7 @@
                                      <i class="mdi mdi-layers widget-one-icon"></i>
                                      <div class="wigdet-one-content">
                                          <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="User This Month">Lists Of Order</p>
-                                         <?php $query = mysqli_query($con, "select * from orderList where status=1");
+                                         <?php $query = mysqli_query($con, "select * from admin_orders");
                                             $countPro = mysqli_num_rows($query);
                                             ?>
                                          <h2><?php echo htmlentities($countPro); ?>
